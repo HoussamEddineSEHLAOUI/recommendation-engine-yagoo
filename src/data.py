@@ -5,11 +5,6 @@ from pymongo import MongoClient
 
 def get_database():
     # Provide the mongodb atlas url to connect python to mongodb using pymongo
-    USER8NAME = 'root'
-    PASSSWORD = 'T8GRF2_uB4/?qCvq'
-    PORT = '29517'
-    HOST = '149.202.107.243'
-    DATA_BASE_NAME = 'yaago-staging'
 
     # Create a connection using MongoClient. You can import MongoClient or use pymongo.MongoClient
     # client = pymongo.MongoClient(HOST, int(PORT))
