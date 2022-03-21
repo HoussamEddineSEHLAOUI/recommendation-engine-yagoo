@@ -12,12 +12,12 @@ def get_recomendations(id):
 
 @app.route("/data", methods=["GET"])
 def getdata():
-    print("DONE ! WITH GET DATA !")
-    #DB = data.get_database()
-    return jsonify(data.GETDATA())
+    return data.get_recommendation()
 
 
 if __name__ == "__main__":
-    print(data.get_database())
-    print(data.get_collection('tags'))
     app.run()
+
+
+# test in POST MAN :
+# http://127.0.0.1:5000/data
