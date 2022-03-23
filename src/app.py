@@ -16,15 +16,19 @@ def get_recomendations(id):
 
 if __name__ == "__main__":
 
-    # Get data base collection names :
-    data.get_database()
-    input()
     # Get all tags , type Data Frame
+    print('##############   tags :')
     display(data.get_Tags_DataFrame())
     input()
 
-    # Get all recomendation , type data frame
-    display(data.get_Recommendation_DataFrame())
+    # get guest tags :
+    print('##############  Guest tags :')
+    display(data.get_guestTag())
+    input()
+
+    # get_guestReviews
+    print('##############  Guest Reviews :')
+    display(data.get_guestReviews())
     input()
 
     # get all category type data frame

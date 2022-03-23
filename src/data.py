@@ -19,15 +19,17 @@ def get_database():
     # client = pymongo.MongoClient(HOST, int(PORT))
     # client = pymongo.MongoClient(CONNECTION_STRING)
     # print(client)
-    client = MongoClient(HOST_DB,
-                         username=USER_NAME_DB,
-                         password=PASSWORD_DB,
-                         port=int(PORT_DB),
-                         authMechanism=AUTH_MECHANISM
-                         )
+    # client = MongoClient(HOST_DB,
+    #                      username=USER_NAME_DB,
+    #                      password=PASSWORD_DB,
+    #                      port=int(PORT_DB),
+    #                      authMechanism=AUTH_MECHANISM
+    #                      )
+
+    client = MongoClient(environement.URL_DATA_BASE)
 
     db = client[DATA_BASE_NAME]
-    print(db.list_collection_names())
+    print('DONNNE CONNECTION ')
     return db
 
 
@@ -45,7 +47,8 @@ def get_dataFrame(name_collection):
         row[i], ObjectId) else row[i] for i in row}, cursor)
 
     # Expand the cursor and construct the DataFrame
-    dataframe = pd.DataFrame(list(ListWithoutOId)[:3])
+    dataframe = pd.DataFrame(list(cursor)[:1])
+
     return dataframe
 
 
@@ -55,3 +58,15 @@ def get_Tags_DataFrame():
 
 def get_Recommendation_DataFrame():
     return get_dataFrame('recommendation')
+
+
+def get_guestTag():
+    return get_dataFrame('guestTag')
+
+
+def get_guestCategory():
+    return get_dataFrame('guestCategory')
+
+
+def get_guestReviews():
+    return get_dataFrame('guestReviews')
