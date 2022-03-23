@@ -2,6 +2,8 @@
 
 from pymongo import MongoClient
 import environement
+import pandas as pd
+from bson.objectid import ObjectId
 
 
 def get_database():
@@ -23,31 +25,33 @@ def get_database():
                          port=int(PORT_DB),
                          authMechanism=AUTH_MECHANISM
                          )
+
     db = client[DATA_BASE_NAME]
-    print('Collection names :', db.list_collection_names())
+    print(db.list_collection_names())
     return db
 
 
 def get_collection(name_collection):
+    # Get collection by name :
     return get_database()[name_collection]
 
 
-def get_tags():
-    print('START PRINTING TAGS CATEGORY')
-    l = {}
-    i = 0
-    print(get_collection('tags').find_one())
-    for x in get_collection('tags').find():
-        l[i] = x['category']
-        i = i+1
-    return l
+def get_dataFrame(name_collection):
+    # Make a query to the specific DB and Collection
+    cursor = get_collection(name_collection).find()
+
+    # convert alll objectId to string,
+    ListWithoutOId = map(lambda row: {i: str(row[i]) if isinstance(
+        row[i], ObjectId) else row[i] for i in row}, cursor)
+
+    # Expand the cursor and construct the DataFrame
+    dataframe = pd.DataFrame(list(ListWithoutOId)[:3])
+    return dataframe
 
 
-def get_recommendation():
-    l = {}
-    i = 0
-    for x in get_collection('recommendation').find():
-        l[i] = x['title']
-        i = i+1
-        break
-    return l
+def get_Tags_DataFrame():
+    return get_dataFrame('tags')
+
+
+def get_Recommendation_DataFrame():
+    return get_dataFrame('recommendation')
