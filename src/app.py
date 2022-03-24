@@ -19,28 +19,14 @@ def get_recomendations(id):
 if __name__ == "__main__":
 
     # Get all tags , type Data Frame
-    print('##############   tags :')
-    display(ServiceData.get_Tags_DataFrame({}))
-    input()
+    # print('##############   guest category :')
+    # display(ServiceData.get_guestCategory({}))
+    # input()
 
-    # get guest tags :
-    print('##############  Guest tags :')
-    display(ServiceData.get_guestTag({}))
-    input()
-
-    # get_guestReviews
-    print('##############  Guest Reviews :')
+    print('############# guest reviews :')
     display(ServiceData.get_guestReviews({}))
-    input()
 
-    # Recommendations :
-    print('##############  Recommendation:')
-    display(ServiceData.get_Recommendation_DataFrame({}))
-    input()
-
-    # get all category type data frame
-
-    app.run(debug=False)
+    # app.run(debug=False)
 
 
 # test in POST MAN :
