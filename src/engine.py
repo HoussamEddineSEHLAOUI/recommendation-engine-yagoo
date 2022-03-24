@@ -35,9 +35,9 @@ def Recommend(df):
     count_matrix = count.fit_transform(df['soup'])
     cosine_sim2 = cosine_similarity(count_matrix, count_matrix)
 
-    netflix_data = df.reset_index()
+    data = df.reset_index()
 
-    indices = pd.Series(netflix_data.index, index=netflix_data['title'])
+    indices = pd.Series(data.index, index=data['title'])
 
     print(indices)
 
