@@ -1,34 +1,41 @@
 from flask import jsonify, Flask
 import engine
-import data
-
+from service import Service
 from IPython.display import display
 
 app = Flask(__name__)
+
+# Service data
+ServiceData = Service()
 
 
 @app.route("/api/v1.0/recommendations/<int:id>", methods=["GET"])
 def get_recomendations(id):
     print("Profile_id: " + str(id))
     # return engine.get_recommendations(id)
-    return data.get_Recommendation_DataFrame().to_json()
+    return {'recommendation': 'DONE'}
 
 
 if __name__ == "__main__":
 
     # Get all tags , type Data Frame
     print('##############   tags :')
-    display(data.get_Tags_DataFrame())
+    display(ServiceData.get_Tags_DataFrame({}))
     input()
 
     # get guest tags :
     print('##############  Guest tags :')
-    display(data.get_guestTag())
+    display(ServiceData.get_guestTag({}))
     input()
 
     # get_guestReviews
     print('##############  Guest Reviews :')
-    display(data.get_guestReviews())
+    display(ServiceData.get_guestReviews({}))
+    input()
+
+    # Recommendations :
+    print('##############  Recommendation:')
+    display(ServiceData.get_Recommendation_DataFrame({}))
     input()
 
     # get all category type data frame
