@@ -38,6 +38,9 @@ if __name__ == "__main__":
     display(ServiceData.get_Recommendation_DataFrame({}))
     input()
 
+
+    engine.Recommend(ServiceData.get_Recommendation_DataFrame({}))
+
     # get all category type data frame
 
     app.run(debug=False)
