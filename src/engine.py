@@ -14,7 +14,7 @@ def Recommend(df):
     new_features = ['fullAddress', 'title', 'category', 'description']
 
     df = df[new_features]
-    df1=df[new_features]
+    df1 = df[new_features]
 
     print(tabulate(df, headers='keys', tablefmt='psql'))
 
@@ -42,7 +42,8 @@ def Recommend(df):
     print(indices)
 
     print("##########################################################################")
-    print(get_recommendations_new('Boulangerie Daumesnil', cosine_sim2 , indices , df,df1))
+
+    print(get_recommendations_new('Boulangerie Daumesnil', cosine_sim2, indices, df, df1))
 
 def clean_data(x):
     return str.lower( str(x).replace(" ", ""))
@@ -66,7 +67,7 @@ def get_recommendations_new(title, cosine_sim, indices, df, df1):
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
 
     # Get the scores of the 10 most similar recommendations
-    sim_scores = sim_scores[1:11]
+    sim_scores = sim_scores[1:30]
 
     # Get the recommendation indices
     recommendation_indices = [i[0] for i in sim_scores]
