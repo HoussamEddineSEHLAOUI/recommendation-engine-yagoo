@@ -106,7 +106,7 @@ def getProfile(genre ,age ,adultNumber ,childrenNumber , babiesNumber):
     print(tabulate(cluster_3, headers='keys', tablefmt='psql'))
     print(tabulate(cluster_4, headers='keys', tablefmt='psql'))
 
-    print("Average age for guest in cluster one: {}".format(np.array(cluster_4['guestBirthDate']).mean()))
+    print("Average age for guest in cluster four: {}".format(np.array(cluster_4['guestBirthDate']).mean()))
     print("Average number of adults {} ".format(np.array(cluster_4['adults']).mean()))
     print("Average number of children {} ".format(np.array(cluster_4['children']).mean()))
     print("Average number of babies {}".format(np.array(cluster_4['babies']).mean()))
