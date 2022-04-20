@@ -1,7 +1,12 @@
 # Data base params
 DATA_BASE_NAME = 'yaago-staging'
+
 URL_DATA_BASE = 'mongodb+srv://stage:password1234$@yaago-prod-cluster-pri.hq5rg.mongodb.net/yaago-staging?authSource=admin&replicaSet=atlas-i9ni26-shard-0&w=majority&readPreference=primary&appname=MongoDB%20Compass&retryWrites=true&ssl=true'
 #URL_DATA_BASE='mongodb+srv://root:T8GRF2_uB4/?qCvq@149.202.107.243:29517/yaago-prod-clone?retryWrites=true&ssl=false?authSource=admin'
+
+URL_DATA_BASE = ''
+
+
 
 # Name of collection :
 
