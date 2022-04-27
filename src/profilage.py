@@ -31,7 +31,7 @@ class profilage:
     def profilage_byAge(self , guestBirthDate ):
 
 
-        DataFrame_OnlineChek =  pd.read_csv("./onLineCheck.csv")
+        DataFrame_OnlineChek = Service.get_OnLineChek_DataFrame({})
         List_DATA = []
         DATA_Guest= {}
         DATA_Guest= self.getProfile_AgeTranche(guestBirthDate, DATA_Guest)
