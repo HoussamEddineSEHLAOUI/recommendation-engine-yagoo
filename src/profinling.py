@@ -1,4 +1,3 @@
-
 import numpy as np
 
 from service import Service
@@ -6,9 +5,10 @@ import pandas as pd
 from datetime import datetime
 from datetime import date
 from database import Database
+import environement
 
 class Profiling:
-    def __init__(self, Geust, DataFrameOnLigneChek , DataFramePropertyBooking):
+    def __init__(self, Geust, DataFrameOnLigneChek):
         print('INITIALISE DATA')
         self.Geust = Geust
         self.DataFrameOnLigneChek = DataFrameOnLigneChek
@@ -64,9 +64,9 @@ class Profiling:
 
     def get_ScoreGendre(self, guestGender):
 
-        if guestGender=='homme':
+        if guestGender==environement.GEUST_GENDER_MALE:
             return 0
-        elif    guestGender=='femme':
+        elif    guestGender==environement.GEUST_GENDER_FEMALE:
             return 1
         else:
             return 2
