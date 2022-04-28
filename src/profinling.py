@@ -32,10 +32,15 @@ class Profiling:
          # 2  fair cette conndition if Guest match the row of your iteration
          if (SCORE_AGE_GEUST == self.get_ScoreAge(row['guestBirthDate']) and SCORE_GENDRE == self.get_ScoreGendre(
                 row['guestGender']) and SCORE_NATIONALITY==self.get_ScoreNatinality(row['guestCountry']) ):
+                DATA={}
+                DATA['propertyBookingId']=row['propertyBookingId']
+                DATA['guestGender'] = row['guestGender']
+                DATA['guestBirthDate'] = row['guestBirthDate']
+                DATA['guestCountry'] = row['guestCountry']
 
-                ListProfiles.append(row['propertyBookingId'])
+                ListProfiles.append(DATA)
 
-        return ListProfiles
+        return pd.DataFrame(list(ListProfiles), columns=['propertyBookingId', 'guestGender','guestBirthDate','guestCountry'])
 
 
     def get_ScoreAge(self, guestBirthDate):
