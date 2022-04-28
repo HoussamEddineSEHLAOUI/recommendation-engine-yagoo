@@ -37,7 +37,7 @@ if __name__ == "__main__":
     print(" test to run ")
 
     Guest = {'guestGender': 'homme', 'guestBirthDate': '1991-05-10', 'guestCountry': 'FR',
-             'startDate': '2000-05-10'}
+             'startDate': '2022-05-10'}
 
 
     profiling = Profiling(Guest, ServiceData.get_OnLineChek_DataFrame({}))
