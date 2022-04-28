@@ -2,7 +2,7 @@ from flask import jsonify, Flask, request
 
 from service import Service
 
-from profiling import Profiling
+from profinling import Profiling
 
 app = Flask(__name__)
 
@@ -10,26 +10,24 @@ app = Flask(__name__)
 ServiceData = Service()
 
 
-
-
 @app.route("/profiling", methods=['POST'])
 def get_profiles():
     request_data = request.get_json()
-    #get data from post request
-    guestGender= request_data['guestGender']
+    # get data from post request
+    guestGender = request_data['guestGender']
     guestBirthDate = request_data['guestBirthDate']
-    guestCountry= request_data['guestCountry']
+    guestCountry = request_data['guestCountry']
     startDate = request_data['startDate']
 
-    #guest object
+    # guest object
     Guest = {'guestGender': guestGender, 'guestBirthDate': guestBirthDate, 'guestCountry': guestCountry,
              'startDate': startDate}
 
-    #initializing profiling class
+    # initializing profiling class
     profiling = Profiling(Guest, ServiceData.get_OnLineChek_DataFrame({}))
 
-    #return list of similar profiles
-    return  profiling.get_Profiles()
+    # return list of similar profiles
+    return profiling.get_Profiles()
 
 
 if __name__ == "__main__":
@@ -39,12 +37,9 @@ if __name__ == "__main__":
     Guest = {'guestGender': 'homme', 'guestBirthDate': '1991-05-10', 'guestCountry': 'FR',
              'startDate': '2022-05-10'}
 
-
     profiling = Profiling(Guest, ServiceData.get_OnLineChek_DataFrame({}))
 
-
     print(profiling.get_Profiles())
-
 
     # app.run(debug=False)
 
