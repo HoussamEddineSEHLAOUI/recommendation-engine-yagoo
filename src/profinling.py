@@ -35,12 +35,16 @@ class Profiling:
                 DATA={}
                 DATA['propertyBookingId']=row['propertyBookingId']
                 DATA['guestGender'] = row['guestGender']
-                DATA['guestBirthDate'] = row['guestBirthDate']
+                 DATA['guestBirthDate'] = row['guestBirthDate']
                 DATA['guestCountry'] = row['guestCountry']
+                DATA['firstName'] = row['firstName']
+                DATA['lastName'] = row['lastName']
 
                 ListProfiles.append(DATA)
 
-        return pd.DataFrame(list(ListProfiles), columns=['propertyBookingId', 'guestGender','guestBirthDate','guestCountry'])
+        return pd.DataFrame(list(ListProfiles), columns=['propertyBookingId','firstName','lastName', 'guestGender','guestBirthDate','guestCountry'])
+
+
 
 
     def get_ScoreAge(self, guestBirthDate):
