@@ -29,7 +29,7 @@ class Profiling:
         for index, row in self.DataFrameOnLigneChek.iterrows():
          # 2  fair cette conndition if Guest match the row of your iteration
          if (SCORE_AGE_GEUST == self.ScoreAge(row['guestBirthdate']) and SCORE_GENDRE == self.get_ScoreGendre(
-                row['guestGender']) and SCORE_NATIONALITY == self.get_ScoreNatinality(row['guestCountry']) ,   SCORE_RESERVATION_DATE == self.get_ScoreDatey(row['startDate']) ):
+                row['guestGender']) and SCORE_NATIONALITY == self.get_ScoreNatinality(row['guestCountry']) ,   SCORE_RESERVATION_DATE == self.get_ScoreDatey(row['onlineCheckGuestSendingTime']) ):
 
                 ListProfiles.append(row['propertyBookingId'])
 
