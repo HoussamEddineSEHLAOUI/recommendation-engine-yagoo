@@ -29,7 +29,7 @@ def get_profiles():
     profiling = Profiling(Guest, ServiceData.get_OnLineChek_DataFrame({}))
 
     #return list of similar profiles
-    return  profiling.get_Profiles({})
+    return  profiling.get_Profiles()
 
 
 if __name__ == "__main__":
