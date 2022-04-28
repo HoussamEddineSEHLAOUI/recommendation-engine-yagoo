@@ -18,22 +18,25 @@ class Profiling:
         print('GET SIMILAR PROFILE')
 
         GUEST = self.Geust
-        SCORE_AGE_GEUST = self.get_ScoreAge(GUEST.guestBirthDate)
-        SCORE_GENDRE = self.get_ScoreGendre(GUEST.guestGender)
-        SCORE_RESERVATION_DATE = self.get_ScoreDate(GUEST.startDate)
-        SCORE_NATIONALITY = self.get_ScoreNatinality(GUEST.guestCountry)
+        print(GUEST)
+        SCORE_AGE_GEUST = self.get_ScoreAge(GUEST['guestBirthDate'])
+
+        SCORE_GENDRE = self.get_ScoreGendre(GUEST['guestGender'])
+       # SCORE_RESERVATION_DATE = self.get_ScoreDateReservation(GUEST['startDate'])
+        SCORE_NATIONALITY = self.get_ScoreNatinality(GUEST['guestCountry'])
 
         ListProfiles = []
 
         # 1  faire une seule iteration sur la date frame de online chek    for row in dataframe :
         for index, row in self.DataFrameOnLigneChek.iterrows():
          # 2  fair cette conndition if Guest match the row of your iteration
-         if (SCORE_AGE_GEUST == self.ScoreAge(row['guestBirthdate']) and SCORE_GENDRE == self.get_ScoreGendre(
-                row['guestGender']) and SCORE_NATIONALITY == self.get_ScoreNatinality(row['guestCountry']) ,   SCORE_RESERVATION_DATE == self.get_ScoreDatey(row['onlineCheckGuestSendingTime']) ):
+         if (SCORE_AGE_GEUST == self.get_ScoreAge(row['guestBirthDate']) and SCORE_GENDRE == self.get_ScoreGendre(
+                row['guestGender']) and SCORE_NATIONALITY==self.get_ScoreNatinality(row['guestCountry']) ):
 
                 ListProfiles.append(row['propertyBookingId'])
 
         return ListProfiles
+
 
     def get_ScoreAge(self, guestBirthDate):
 
@@ -54,7 +57,7 @@ class Profiling:
 
     def get_ScoreNatinality(self, guestCountry):
 
-        return float(guestCountry)
+        return guestCountry
 
     def get_ScoreDateReservation(self, startDate):
         if(startDate=='nan'):
