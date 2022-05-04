@@ -79,31 +79,6 @@ class CleaningData:
 
         return pd.DataFrame(list(List_DATA), columns=['guestId', 'recommendationId', 'SCORE_Like'])
 
-    def get_guest_Tags_Matric(self):
-        # bug stil here
-        DataFrame_Tags = self.repository.get_Tags_DataFrame({}).head(5)
-        DataFrame_guest = self.repository.get_Guest_DataFrame({})
-
-        print('Get data is DONE !')
-        List_DATA = []
-        for index, row_guest in DataFrame_guest.iterrows():
-            for index, row_tags in DataFrame_Tags.iterrows():
-                # initialise sum to zero:
-                DATA = {}
-                guestId = row_guest['_id']
-                # guestId = ObjectId('61f1347c14a5f64c2859eddf')
-                tagId = row_tags['_id']
-                # nbClickTag = repository.get_guestTag_byId({'_id': _id})
-                nbClickTag = self.repository.get_guestTag_byId_new(
-                    {},  {'guestId': guestId, 'tagId': tagId})
-
-                DATA['guestId'] = guestId
-                DATA['tagId'] = tagId
-                DATA['nbClickTag'] = nbClickTag
-                print(DATA)
-                List_DATA.append(DATA)
-        return pd.DataFrame(list(List_DATA), columns=['guestId', 'tagId', 'nbClickTag'])
-
     # All the matrix :
 
     def get_Matrix_Guest_x_Recommendation_Behavior(self):
