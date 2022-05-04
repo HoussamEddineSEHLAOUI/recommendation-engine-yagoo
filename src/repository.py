@@ -15,12 +15,19 @@ class Repository:
         return pd.DataFrame(list(ListWithoutOId))
 
     def get_Guest_DataFrame(self, query):
-        Cursor_Guest = Database.find(environement.COLLECTION_GUEST, query)
+        Cursor_Guest = Database.find(
+            environement.COLLECTION_ONLINECHECK, query)
         return self.convert_to_dataFrame(Cursor_Guest)
 
     def get_Tags_DataFrame(self, query):
         Cursor_Tags = Database.find(environement.COLLECTION_TAGS, query)
         return self.convert_to_dataFrame(Cursor_Tags)
+
+    def get_guest_byId(id):
+        objInstance = ObjectId(id)
+        Cursor_Guest = Database.find_one(
+            collection=environement.COLLECTION_GUEST, query=objInstance)
+        return Cursor_Guest
 
     def get_Category(self):
         Tags_data_frame = Database.find(environement.COLLECTION_TAGS, {})
@@ -59,7 +66,7 @@ class Repository:
         for row in Cursor_Guest_Tag:
             if(_id == row['_id']):
                 return row['nbClickTag']
-        return -100
+        return 0
 
     def get_guestCategory(self, query):
         Cursor_Guest_category = Database.find(
@@ -70,6 +77,15 @@ class Repository:
             row['category'] = row['_id']['category']
             list_guest_category.append(row)
         return self.convert_to_dataFrame(list_guest_category)
+
+    def get_guestCategory_nbClickCategory(self, query, _id):
+        # On test
+        Cursor_Guest_category = Database.find(
+            environement.COLLECTION_GUEST_CATEGORY, query)
+        for row in Cursor_Guest_category:
+            if row['_id'] == _id:
+                return row['nbClickCategory']
+        return None
 
     def get_guestReviews(self, query):
         Cursor_Guest_Reviews = Database.find(

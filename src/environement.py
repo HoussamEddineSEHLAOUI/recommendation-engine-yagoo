@@ -25,3 +25,8 @@ SCORE_clickOnSliderPictures = 3
 GEUST_GENDER_MALE = 'homme'
 GEUST_GENDER_FEMALE = 'femme'
 GEUST_GENDER_AUTRE = 'A'
+
+
+# Data of recommendations
+# 5Km
+RADIUS = 100

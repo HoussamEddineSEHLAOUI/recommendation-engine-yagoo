@@ -1,4 +1,4 @@
-from cmath import nan
+
 import pandas as pd
 import matplotlib.pyplot as plt
 from repository import Repository
@@ -7,6 +7,10 @@ from datetime import datetime
 from datetime import date
 from bson.objectid import ObjectId
 from tabulate import tabulate
+import random
+from datetime import datetime
+from recommendation import Recommendation
+from profiling import Profiling
 
 
 class CleaningData:
@@ -57,41 +61,7 @@ class CleaningData:
 
         return pd.DataFrame(list(List_DATA), columns=['guestId', 'recommendationId', 'SCORE_BEHAVIOR'])
 
-    def get_OnLineChek_clean(self):
-        DataFrame_OnlineChek = self.repository.get_OnLineChek_DataFrame({})
-        List_DATA = []
-        for index, row in DataFrame_OnlineChek.iterrows():
-            DATA = {}
-
-            # Get Guest ID
-            DATA['guestId'] = row['propertyBookingId']
-            # Get age
-            guestBirthDate = row['guestBirthDate']
-            if(isinstance(guestBirthDate, str)):
-                Age = abs(date.today().year -
-                          datetime.strptime(guestBirthDate, '%Y-%m-%d').year)
-                if(Age < 20):
-                    DATA['SCORE_guestAge'] = 1
-                elif(Age < 30 and Age >= 20):
-                    DATA['SCORE_guestAge'] = 2
-                elif(Age < 40 and Age >= 30):
-                    DATA['SCORE_guestAge'] = 3
-                else:
-                    DATA['SCORE_guestAge'] = 4
-            else:
-                DATA['SCORE_guestAge'] = 2
-            # Get gender
-            guestGender = row['guestGender']
-            if(guestGender == environement.GEUST_GENDER_FEMALE):
-                DATA['SCORE_guestGender'] = 1
-            elif(guestGender == environement.GEUST_GENDER_MALE):
-                DATA['SCORE_guestGender'] = 2
-            else:
-                DATA['SCORE_guestGender'] = 0
-            List_DATA.append(DATA)
-        return pd.DataFrame(list(List_DATA), columns=['guestId', 'SCORE_guestAge', 'SCORE_guestGender'])
-
-    def get_Recommendation_Clean(self):
+    def get_Matrix_Guest_x_Recommendation_likes(self):
         # NO BIGS
         DataFrame_Recommendation = self.repository.get_Recommendation_DataFrame({
         })
@@ -134,72 +104,124 @@ class CleaningData:
                 List_DATA.append(DATA)
         return pd.DataFrame(list(List_DATA), columns=['guestId', 'tagId', 'nbClickTag'])
 
-    def get_FactoryMatric_Behavior(self):
+    # All the matrix :
+
+    def get_Matrix_Guest_x_Recommendation_Behavior(self):
+        # Create a guest :
+        Guest = {
+            '_id': '6255272e196ab66cbe41363b',
+            'guestGender': 'femme',
+            'guestBirthDate': '1968-08-16',
+            'guestCountry': 'FR',
+            'startDate': '2000-05-10'}
+
         # NO BUGS
-        DataFrame_Guest_Reviews_Behaivor = self.get_guestReviews_clean({
-        })
+        DataFrame_Guest_Reviews_Behaivor = self.get_guestReviews_clean()
         DataFrame_Recommendation = self.repository.get_Recommendation_DataFrame({
         })
+        DataFrame_APPROXIMATE_Recommendation = Recommendation(
+            DataFrame_Recommendation).get_Recommendation()
+        print("GET RECOMMENDATION EN PARIS")
+        DataFrame_guest = self.repository.get_Guest_DataFrame({})
+        DataFrameOfProfiles = Profiling(Guest, DataFrame_guest).get_Profiles()
+        print(DataFrameOfProfiles)
+        print("GET DATA OF PROFILES ")
+        # Start traitement
+        List_DATA = []
+        for index, row_guest in DataFrameOfProfiles.iterrows():
+            for index, row_recommendation in DataFrame_APPROXIMATE_Recommendation.iterrows():
+                # initialise sum to zero:
+                DATA = {}
+                guestId = row_guest['_id']
+                recommendationId = row_recommendation['_id']
+                # Get score behaivor :
+                # None was here before
+                # random.choice([0, 10, 15, 20, 12, 15, 19, 151, 1])
+                SCORE_BEHAVIOR = random.choice(
+                    [1, 2, 3, 4, 5, None, None])
+                for index, row_guest_recommendation_behaivor in DataFrame_Guest_Reviews_Behaivor.iterrows():
+                    if(str(guestId) == str(row_guest_recommendation_behaivor['guestId']) and str(recommendationId) == str(row_guest_recommendation_behaivor['recommendationId'])):
+                        SCORE_BEHAVIOR = row_guest_recommendation_behaivor['SCORE_BEHAVIOR']
+                        break
+                # Add DATA
+                DATA['guestId'] = str(guestId)
+                DATA['recommendationId'] = str(recommendationId)
+                DATA['SCORE_BEHAVIOR'] = SCORE_BEHAVIOR
+                DATA['rating'] = SCORE_BEHAVIOR
+                List_DATA.append(DATA)
+                # print(DATA)
+        print('DONE GET DATA')
+        return (pd.DataFrame(list(List_DATA), columns=['guestId', 'recommendationId', 'SCORE_BEHAVIOR', 'rating']), DataFrame_Recommendation)
+
+    def get_Matrix_Guest_x_Recommendation_on_Category(self):
+        # Working on this , morrrre bug so far
+        # NO BUGS
+
+        # Get All the guest :
         DataFrame_guest = self.repository.get_Guest_DataFrame({}).head(1)
 
+        # Get All the recommendation
+        DataFrame_Recommendation = self.repository.get_Recommendation_DataFrame({
+        }).head(10)
+        print('\n GET ALL DATA DOEN ! \n')
         List_DATA = []
         for index, row_guest in DataFrame_guest.iterrows():
             for index, row_recommendation in DataFrame_Recommendation.iterrows():
                 # initialise sum to zero:
                 DATA = {}
-                guestId = row_guest['_id']
-                recommendationId = row_recommendation['_id']
+                Categorie_of_recommendation = row_recommendation['category']
+                # guestId = row_guest['_id']
+                guestId = ObjectId('6217efa3d8eaa414b9052470')
 
-                # Get score behaivor :
-                SCORE_BEHAVIOR = None
-                for index, row_guest_recommendation_behaivor in DataFrame_Guest_Reviews_Behaivor.iterrows():
-                    if(guestId == row_guest_recommendation_behaivor['guestId'] and recommendationId == row_guest_recommendation_behaivor['recommendationId']):
-                        SCORE_BEHAVIOR = row_guest_recommendation_behaivor['SCORE_BEHAVIOR']
-                        break
+                # Get number of clicks on category
+                nbClickCategory = self.repository.get_guestCategory_nbClickCategory(
+                    {},  {'guestId': guestId, 'category': Categorie_of_recommendation})
 
-                    # Add DATA
-                DATA['guestId'] = guestId
-                DATA['recommendationId'] = recommendationId
-                DATA['SCORE_BEHAVIOR'] = SCORE_BEHAVIOR
-                List_DATA.append(DATA)
-        return pd.DataFrame(list(List_DATA), columns=['guestId', 'recommendationId', 'SCORE_BEHAVIOR'])
-
-    def get_Matrix_Categorie_Recommendation(self):
-        List_of_category = self.repository.get_Category()
-        DataFrame_Recommendation = self.repository.get_Recommendation_DataFrame({
-        })
-        print('GET ALL DATA DONE !')
-        List_DATA = []
-        for index, row_recommendation in DataFrame_Recommendation.iterrows():
-            for category in List_of_category:
-                # initialise sum to zero:
-                DATA = {}
-                if(category == row_recommendation['category']):
-                    DATA['isInCategory'] = 1
-                else:
-                    DATA['isInCategory'] = 0
                 # Add DATA
                 DATA['recommendationId'] = row_recommendation['_id']
-                DATA['category'] = category
-                List_DATA.append(DATA)
-
-        return pd.DataFrame(list(List_DATA), columns=['recommendationId', 'category', 'isInCategory'])
-
-    def get_Matrix_Guest_x_Recommendation_on_Category(self):
-        # Working on this , morrrre bug so far
-        Matrix_Categorie_x_Recommendation = self.get_Matrix_Categorie_Recommendation()
-        Matrix_Categorie_x_Guest = self.repository.get_guestCategory(
-            {})[['guestId', 'category', 'nbClickCategory']]
-        List_DATA = []
-        for index, row_recommendation in Matrix_Categorie_x_Guest.iterrows():
-            for index, row_recommendation in Matrix_Categorie_x_Recommendation.iterrows():
-                # initialise sum to zero:
-                DATA = {}
-
-                # Add DATA
-                DATA['guestId'] = row_recommendation['_id']
-                DATA['recommendationId'] = ''
-                DATA['SCORE_Category'] = ''
+                DATA['guestId'] = guestId
+                DATA['SCORE_Category'] = nbClickCategory
+                print(DATA)
                 List_DATA.append(DATA)
 
         return pd.DataFrame(list(List_DATA), columns=['guestId', 'recommendationId', 'SCORE_Category'])
+
+    def get_Matrix_Guest_x_Recommendation_on_Tags(self):
+        # Working on this , morrrre bug so far
+
+        # Get All the guest :
+        DataFrame_guest = self.repository.get_Guest_DataFrame({})
+
+        # Get All the recommendation : {'tagIds': {'$exists': True, '$ne': None}}
+        DataFrame_Recommendation = self.repository.get_Recommendation_DataFrame({
+        }).head(10)
+        print('\n GET ALL DATA DONE ! \n')
+        input()
+        List_DATA = []
+        for index, row_guest in DataFrame_guest.iterrows():
+            for index, row_recommendation in DataFrame_Recommendation.iterrows():
+                # initialise sum to zero:
+                DATA = {}
+                Tags_of_recommendation = row_recommendation['tagIds']
+                # guestId = row_guest['_id']
+                # guestId = ObjectId('6217efa3d8eaa414b9052470')
+                guestId = row_guest['_id']
+                if isinstance(Tags_of_recommendation, list) and Tags_of_recommendation != []:
+                    SOME_CLICKS_ON_TAGS = 0
+                    for tagId in list(Tags_of_recommendation):
+                        # Get number of clicks on tag
+                        nbClickTag = self.repository.get_guestTag_byId_new(
+                            {},  {'guestId': guestId, 'tagId': tagId})
+
+                        SOME_CLICKS_ON_TAGS = SOME_CLICKS_ON_TAGS + nbClickTag
+
+                else:
+                    SOME_CLICKS_ON_TAGS = None
+                # Add DATA
+                DATA['SCORE_Tags'] = SOME_CLICKS_ON_TAGS
+                DATA['recommendationId'] = row_recommendation['_id']
+                DATA['guestId'] = guestId
+
+                List_DATA.append(DATA)
+
+        return pd.DataFrame(list(List_DATA), columns=['guestId', 'recommendationId', 'SCORE_Tags'])
