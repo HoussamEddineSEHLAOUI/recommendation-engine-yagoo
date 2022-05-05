@@ -7,6 +7,7 @@ import environement
 class Repository:
     def __init__(self):
         Database.initialize()
+        self.repo = 'this is a repo'
 
     def convert_cursorWithObjID_to_ListWithoutObjID(self, cursor):
         return map(lambda row: {i: str(row[i]) if isinstance(row[i], ObjectId) else row[i] for i in row}, cursor)
@@ -23,10 +24,12 @@ class Repository:
         Cursor_Tags = Database.find(environement.COLLECTION_TAGS, query)
         return self.convert_to_dataFrame(Cursor_Tags)
 
-    def get_guest_byId(id):
+    def get_guest_byId(self, id):
         objInstance = ObjectId(id)
+        print(type(objInstance))
         Cursor_Guest = Database.find_one(
-            collection=environement.COLLECTION_GUEST, query=objInstance)
+            collection=environement.COLLECTION_ONLINECHECK, query={'_id': objInstance})
+
         return Cursor_Guest
 
     def get_Category(self):

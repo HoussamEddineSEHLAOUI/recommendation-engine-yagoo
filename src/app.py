@@ -5,7 +5,7 @@ from engine import Engine
 from repository import Repository
 import json
 from bson.objectid import ObjectId
-
+from flask import request
 #
 from repository import Repository
 from profiling import Profiling
@@ -25,8 +25,10 @@ def get_recomendations(id):
 
 @app.route("/api/recommendations", methods=["GET"])
 def getRecommendation():
-    RecommendationFinale = Engine().get_Recommendation_Behavior(
-        '622f5a0ec025410ff5e5efd0')
+    # get the id of the guest
+    guestId = request.args.get('guestId')
+
+    RecommendationFinale = Engine().get_Recommendation_Behavior(guestId)
     list_recommendation = []
     for index, row_recommendation in RecommendationFinale.iterrows():
         DATA = {}
@@ -48,7 +50,7 @@ if __name__ == "__main__":
     # dt = engine.get_MatrixPlein_Guest_x_Recommendation_Behavior()
     # print(tabulate(dt, headers='keys', tablefmt='psql'))
 
-    # app.run(host="127.0.0.1", port=5053, debug=False)
+    app.run(host="127.0.0.1", port=5055, debug=False)
 
     # test in POST MAN :
     # http://127.0.0.1:5000/data
@@ -69,4 +71,4 @@ if __name__ == "__main__":
     # # RecommendationFinale.join()
     # print(RecommendationFinale)
 
-    print(Repository.get_guest_byId('61fa61b2f2605e47c844b918'))
+    # print(Repository.get_guest_byId('61fa61b2f2605e47c844b918'))

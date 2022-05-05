@@ -1,6 +1,6 @@
 # Data base params
 DATA_BASE_NAME = 'yaago-staging'
-URL_DATA_BASE = ''
+URL_DATA_BASE = 'mongodb+srv://stage:password1234%24@yaago-prod-cluster-pri.hq5rg.mongodb.net/yaago-staging?authSource=admin&replicaSet=atlas-i9ni26-shard-0&w=majority&readPreference=primary&retryWrites=true&ssl=true'
 
 
 # Name of collection :

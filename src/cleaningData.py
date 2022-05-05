@@ -81,14 +81,9 @@ class CleaningData:
 
     # All the matrix :
 
-    def get_Matrix_Guest_x_Recommendation_Behavior(self):
+    def get_Matrix_Guest_x_Recommendation_Behavior(self, guestId):
         # Create a guest :
-        Guest = {
-            '_id': '6255272e196ab66cbe41363b',
-            'guestGender': 'femme',
-            'guestBirthDate': '1968-08-16',
-            'guestCountry': 'FR',
-            'startDate': '2000-05-10'}
+        Guest = self.repository.get_guest_byId(guestId)
 
         # NO BUGS
         DataFrame_Guest_Reviews_Behaivor = self.get_guestReviews_clean()

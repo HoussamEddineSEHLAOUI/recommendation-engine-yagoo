@@ -112,7 +112,8 @@ class Engine:
         # initialize the spark session
         spark = SparkSession.builder.appName(appName).getOrCreate()
 
-        get_Matrix_Guest_x_Recommendation_Behavior = self.cleaningData.get_Matrix_Guest_x_Recommendation_Behavior()
+        get_Matrix_Guest_x_Recommendation_Behavior = self.cleaningData.get_Matrix_Guest_x_Recommendation_Behavior(
+            guestId)
 
         RECOMMENDATION_DATAFRAME = get_Matrix_Guest_x_Recommendation_Behavior[1]
         Matrix_Guest_x_Recommendation_Behavior_withNone_pd = get_Matrix_Guest_x_Recommendation_Behavior[
